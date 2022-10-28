@@ -1,6 +1,6 @@
 import os
 
-import utils.io as io
+import evaluation.vico.utils.io as io
 
 
 class SemEval201810Constants(io.JsonSerializableClass):
@@ -8,10 +8,10 @@ class SemEval201810Constants(io.JsonSerializableClass):
             self,
             raw_dir=os.path.join(
                 os.getcwd(),
-                'symlinks/data/semeval_2018_10/raw'),
+                'data/datasets/semeval_2018_10/raw'),
             proc_dir=os.path.join(
                 os.getcwd(),
-                'symlinks/data/semeval_2018_10/proc')):
+                'data/datasets/semeval_2018_10/proc')):
         self.raw_dir = raw_dir
         self.proc_dir = proc_dir
 

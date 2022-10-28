@@ -1,9 +1,9 @@
 import os
 import itertools
 
-import utils.io as io
-from data.semeval_2018_10.constants import SemEval201810Constants
-from data.visualgenome.constants import VisualGenomeConstants
+import evaluation.vico.utils.io as io
+from evaluation.vico.data.semeval_2018_10.constants import SemEval201810Constants
+from evaluation.vico.data.visualgenome.constants import VisualGenomeConstants
 
 
 def main():

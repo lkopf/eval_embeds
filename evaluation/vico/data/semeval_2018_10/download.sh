@@ -3,7 +3,7 @@
 URL="https://github.com/dpaperno/DiscriminAtt.git"
 
 # Where the downloaded files will be stored
-TARGET="${PWD}/symlinks/data/semeval_2018_10/raw"
+TARGET="${PWD}/data/datasets/semeval_2018_10/raw"
 
 echo "Creating raw data directory ${TARGET}..."
 mkdir -p $TARGET
@@ -14,4 +14,4 @@ echo "-----------------------------------------------"
 git clone $URL $TARGET
 
 echo "Preprocessing ..."
-bash data/semeval_2018_10/preprocess.sh
+bash evaluation/vico/data/semeval_2018_10/preprocess.sh

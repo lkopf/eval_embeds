@@ -1,6 +1,6 @@
 # No need to run this if using torchvision
 
-OUT_DIR="${PWD}/symlinks/data/cifar100"
+OUT_DIR="${PWD}/data/datasets/cifar100"
 mkdir $OUT_DIR
 
 echo "Downloading CIFAR 100 ..."

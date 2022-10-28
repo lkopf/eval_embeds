@@ -1,8 +1,8 @@
 import os
 import csv
 
-import utils.io as io
-from data.semeval_2018_10.constants import SemEval201810Constants
+import evaluation.vico.utils.io as io
+from evaluation.vico.data.semeval_2018_10.constants import SemEval201810Constants
 
 
 def read_txt(txt_file):

@@ -1,8 +1,8 @@
 import os
 
-import utils.io as io
+import evaluation.vico.utils.io as io
 from tqdm import tqdm
-from data.semeval_2018_10.constants import SemEval201810Constants
+from evaluation.vico.data.semeval_2018_10.constants import SemEval201810Constants
 
 def compute_word_freq(words):
     freqs = {}
