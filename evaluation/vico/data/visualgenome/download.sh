@@ -4,7 +4,7 @@ BASEURL="https://visualgenome.org/static/data/dataset"
 IMG_BASEURL="https://cs.stanford.edu/people/rak248/VG_100K_2"
 
 # Where the downloaded files will be stored
-TARGET="${PWD}/symlinks/data/visualgenome/raw"
+TARGET="${PWD}/data/datasets/visualgenome/raw"
 
 echo "Creating raw data directory ${TARGET}..."
 mkdir -p $TARGET
@@ -56,4 +56,4 @@ done
 # done
 
 echo "Preprocessing ..."
-bash data/visualgenome/preprocess.sh
+bash evaluation/vico/data/visualgenome/preprocess.sh

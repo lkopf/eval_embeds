@@ -1,6 +1,6 @@
 import os
 
-import utils.io as io
+import evaluation.vico.utils.io as io
 
 
 class VisualGenomeConstants(io.JsonSerializableClass):
@@ -8,10 +8,10 @@ class VisualGenomeConstants(io.JsonSerializableClass):
             self,
             raw_dir=os.path.join(
                 os.getcwd(),
-                'symlinks/data/visualgenome/raw'),
+                'data/datasets/visualgenome/raw'),
             proc_dir=os.path.join(
                 os.getcwd(),
-                'symlinks/data/visualgenome/proc')):
+                'data/datasets/visualgenome/proc')):
         self.raw_dir = raw_dir
         self.proc_dir = proc_dir
         

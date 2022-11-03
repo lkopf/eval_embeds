@@ -4,9 +4,9 @@ import torch.nn as nn
 from torch.autograd import Variable
 import numpy as np
 
-import utils.io as io
-import utils.pytorch_layers as pytorch_layers
-from .embeddings import Embeddings, EmbeddingsConstants
+import evaluation.vico.utils.io as io
+import evaluation.vico.utils.pytorch_layers as pytorch_layers
+from evaluation.vico.exp.multi_sense_cooccur.models.embeddings import Embeddings, EmbeddingsConstants
 
 
 class TransformConstants(io.JsonSerializableClass):

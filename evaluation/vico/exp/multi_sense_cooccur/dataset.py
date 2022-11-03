@@ -8,7 +8,7 @@ from torch.utils.data import Dataset, DataLoader
 from torch.utils.data.dataloader import default_collate
 from torchvision import transforms
 
-import utils.io as io
+import evaluation.vico.utils.io as io
 
 
 class MultiSenseCooccurDatasetConstants(io.JsonSerializableClass):

@@ -1,14 +1,15 @@
 import os
 import h5py
 
-from exp.experimenter import *
-from utils.argparse_utils import manage_required_args, str_to_bool
-from utils.constants import Constants, ExpConstants
-from exp.semeval_2018_10.dataset import SemEval201810DatasetConstants
-from exp.semeval_2018_10.models.concat_svm_simple import ConcatSVMConstants
-from data.glove.constants import GloveConstantsFactory
-import exp.semeval_2018_10.train_concat_svm as train_concat_svm
-import exp.semeval_2018_10.eval_concat_svm as eval_concat_svm
+import evaluation.vico.utils.io as io
+from evaluation.vico.exp.experimenter import *
+from evaluation.vico.utils.argparse_utils import manage_required_args, str_to_bool
+from evaluation.vico.utils.constants import Constants, ExpConstants
+from evaluation.vico.exp.semeval_2018_10.dataset import SemEval201810DatasetConstants
+from evaluation.vico.exp.semeval_2018_10.models.concat_svm_simple import ConcatSVMConstants
+from evaluation.vico.data.glove.constants import GloveConstantsFactory
+import evaluation.vico.exp.semeval_2018_10.train_concat_svm as train_concat_svm
+import evaluation.vico.exp.semeval_2018_10.eval_concat_svm as eval_concat_svm
 
 parser.add_argument(
     '--exp_name',
@@ -77,7 +78,7 @@ parser.add_argument(
 parser.add_argument(
     '--batch_size',
     default=2560,
-    type=float,
+    type=int, # float,
     help='Embedding dimension')
 
 
@@ -111,9 +112,11 @@ def exp_train_concat_svm():
     if args.out_base_dir is None:
         out_base_dir = os.path.join(
             os.getcwd(),
-            'symlinks/exp/semeval_2018_10/concat_svm')
+            f'evaluation/vico/exp/semeval_2018_10/concat_svm/{args.exp_name}')
     else:
         out_base_dir = args.out_base_dir
+
+    io.mkdir_if_not_exists(out_base_dir)
 
     exp_const = ExpConstants(
         exp_name=exp_name,
@@ -183,7 +186,7 @@ def exp_eval_concat_svm():
     if args.out_base_dir is None:
         out_base_dir = os.path.join(
             os.getcwd(),
-            'symlinks/exp/semeval_2018_10/concat_svm')
+            f'evaluation/vico/exp/semeval_2018_10/concat_svm/{args.exp_name}')
     else:
         out_base_dir = args.out_base_dir
 

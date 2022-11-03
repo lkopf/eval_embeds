@@ -4,8 +4,8 @@ import itertools
 from tqdm import tqdm
 import pandas as pd
 
-import utils.io as io
-from utils.constants import save_constants
+import evaluation.vico.utils.io as io
+from evaluation.vico.utils.constants import save_constants
 
 
 def main(exp_const,data_const):

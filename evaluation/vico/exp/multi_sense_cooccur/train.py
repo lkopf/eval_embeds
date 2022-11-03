@@ -12,13 +12,13 @@ import torch.optim as optim
 from tensorboard_logger import configure, log_value
 import numpy as np
 
-import utils.io as io
-from utils.model import Model
-from utils.constants import save_constants
-import utils.pytorch_layers as pytorch_layers
-from .models.logbilinear import LogBilinear
-from .dataset import MultiSenseCooccurDataset
-from .neg_dataset import NegMultiSenseCooccurDataset
+import evaluation.vico.utils.io as io
+from evaluation.vico.utils.model import Model
+from evaluation.vico.utils.constants import save_constants
+import evaluation.vico.utils.pytorch_layers as pytorch_layers
+from evaluation.vico.exp.multi_sense_cooccur.models.logbilinear import LogBilinear
+from evaluation.vico.exp.multi_sense_cooccur.dataset import MultiSenseCooccurDataset
+from evaluation.vico.exp.multi_sense_cooccur.neg_dataset import NegMultiSenseCooccurDataset
 
 
 def train_model(model,dataloader,neg_dataloader,exp_const):

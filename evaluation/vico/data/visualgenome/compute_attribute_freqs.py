@@ -1,8 +1,8 @@
 import os
 
-import utils.io as io
+import evaluation.vico.utils.io as io
 from tqdm import tqdm
-from data.visualgenome.constants import VisualGenomeConstants
+from evaluation.vico.data.visualgenome.constants import VisualGenomeConstants
 
 
 def compute_attribute_freqs(object_annos):

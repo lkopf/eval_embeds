@@ -7,7 +7,7 @@ from sklearn.manifold import TSNE
 from sklearn.tree import DecisionTreeClassifier
 import sklearn.metrics as skmetrics
 
-import utils.io as io
+import evaluation.vico.utils.io as io
 #from . import categories as C
 #from . import fine_categories as C
 

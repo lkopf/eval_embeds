@@ -2,7 +2,7 @@ import os
 import torch
 import torch.nn as nn
 
-import utils.io as io
+import evaluation.vico.utils.io as io
 
 
 class Model(io.WritableToFile):

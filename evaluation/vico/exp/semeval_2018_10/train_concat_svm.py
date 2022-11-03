@@ -13,13 +13,13 @@ from torch.utils.data import DataLoader
 from tensorboard_logger import configure, log_value
 from torch.utils.data.sampler import RandomSampler, SequentialSampler
 
-import utils.io as io
-from utils.model import Model
-from utils.constants import save_constants
-from exp.semeval_2018_10.models.concat_svm_simple import ConcatSVM
-from exp.semeval_2018_10.dataset import SemEval201810Dataset
-from exp.semeval_2018_10.f1_computer import compute_f1
-from utils.pytorch_layers import set_learning_rate
+import evaluation.vico.utils.io as io
+from evaluation.vico.utils.model import Model
+from evaluation.vico.utils.constants import save_constants
+from evaluation.vico.exp.semeval_2018_10.models.concat_svm_simple import ConcatSVM
+from evaluation.vico.exp.semeval_2018_10.dataset import SemEval201810Dataset
+from evaluation.vico.exp.semeval_2018_10.f1_computer import compute_f1
+from evaluation.vico.utils.pytorch_layers import set_learning_rate
 
 
 def train_model(model,train_data_loader,val_data_loader,exp_const):
@@ -82,9 +82,9 @@ def train_model(model,train_data_loader,val_data_loader,exp_const):
                     epoch,
                     i,
                     step,
-                    total_loss.data[0],
-                    hinge_loss.data[0],
-                    l2_reg.data[0],
+                    total_loss.data, # [0],
+                    hinge_loss.data, # [0],
+                    l2_reg.data, # [0],
                     train_avg_f1,
                     train_acc,
                     lr,
@@ -92,9 +92,9 @@ def train_model(model,train_data_loader,val_data_loader,exp_const):
                     w[1],
                     w[2])
                 print(log_str)
-                log_value('train_loss',total_loss.data[0],step)
-                log_value('train_hinge_loss',hinge_loss.data[0],step)
-                log_value('train_l2_reg',l2_reg.data[0],step)
+                log_value('train_loss',total_loss.data,step) # [0],step)
+                log_value('train_hinge_loss',hinge_loss.data,step) # [0],step)
+                log_value('train_l2_reg',l2_reg.data,step) # [0],step)
                 log_value('train_f1',train_avg_f1,step)
                 log_value('train_acc',train_acc,step)
 
@@ -162,7 +162,7 @@ def eval_model(model,data_loader,exp_const):
         
         batch_size = score.shape[0]
         count += batch_size
-        hinge_loss += (batch_hinge_loss.data[0]*batch_size)
+        hinge_loss += (batch_hinge_loss*batch_size) # .data[0]*batch_size)
         pred_score.append(score.data.cpu().numpy())
         gt_label.append(data['label'].numpy())
     

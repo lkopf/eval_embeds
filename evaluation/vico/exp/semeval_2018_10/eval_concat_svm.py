@@ -13,13 +13,13 @@ from torch.utils.data import DataLoader
 from tensorboard_logger import configure, log_value
 from torch.utils.data.sampler import RandomSampler, SequentialSampler
 
-import utils.io as io
-from utils.model import Model
-from utils.constants import save_constants
-from exp.semeval_2018_10.models.concat_svm_simple import ConcatSVM
-from exp.semeval_2018_10.dataset import SemEval201810Dataset
-from exp.semeval_2018_10.f1_computer import compute_f1
-from exp.semeval_2018_10.model_selection import select_best_concat_svm
+import evaluation.vico.utils.io as io
+from evaluation.vico.utils.model import Model
+from evaluation.vico.utils.constants import save_constants
+from evaluation.vico.exp.semeval_2018_10.models.concat_svm_simple import ConcatSVM
+from evaluation.vico.exp.semeval_2018_10.dataset import SemEval201810Dataset
+from evaluation.vico.exp.semeval_2018_10.f1_computer import compute_f1
+from evaluation.vico.exp.semeval_2018_10.model_selection import select_best_concat_svm
 
 
 def eval_model(model,data_loader,exp_const):
@@ -51,7 +51,7 @@ def eval_model(model,data_loader,exp_const):
             Variable(data['label']).cuda())   
         batch_size = score.shape[0]
         count += batch_size
-        loss += (batch_loss.data[0]*batch_size)
+        loss += (batch_loss.data*batch_size) # [0]*batch_size)
         score = score.data.cpu().numpy()
         label = data['label'].numpy()
         pred_score.append(score)
@@ -152,11 +152,12 @@ def main(exp_const,data_const,model_const):
 
     print('Begin evaluation ...')
     result, correct_preds, incorrect_preds = eval_model(model,data_loader,exp_const)
+    result_dict = {k: v.item() for k, v in result.items()} ### added, transorms single tensors to integers
     result_json = os.path.join(
         exp_const.exp_dir,
         f'results_{data_const.subset}.json')
-    io.dump_json_object(result,result_json)
-    print(io.dumps_json_object(result))
+    io.dump_json_object(result_dict,result_json) ### 
+    print(io.dumps_json_object(result_dict)) ###
 
     correct_preds_json = os.path.join(
         exp_const.exp_dir,

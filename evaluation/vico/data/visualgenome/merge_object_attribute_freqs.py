@@ -1,7 +1,7 @@
 import copy
 
-import utils.io as io
-from data.visualgenome.constants import VisualGenomeConstants
+import evaluation.vico.utils.io as io
+from evaluation.vico.data.visualgenome.constants import VisualGenomeConstants
 
 def main():
     genome_const = VisualGenomeConstants()

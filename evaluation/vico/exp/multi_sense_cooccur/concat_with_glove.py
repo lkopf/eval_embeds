@@ -5,8 +5,8 @@ import numpy as np
 import nltk
 from nltk.stem import WordNetLemmatizer
 
-import utils.io as io
-from utils.constants import save_constants
+import evaluation.vico.utils.io as io
+from evaluation.vico.utils.constants import save_constants
 
 
 class Lemmatizer():

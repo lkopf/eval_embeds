@@ -5,8 +5,8 @@ import itertools
 import numpy as np
 from torch.utils.data import Dataset, DataLoader
 
-import utils.io as io
-from data.semeval_2018_10.constants import SemEval201810Constants
+import evaluation.vico.utils.io as io
+from evaluation.vico.data.semeval_2018_10.constants import SemEval201810Constants
 
 
 class SemEval201810DatasetConstants(SemEval201810Constants):
@@ -14,10 +14,10 @@ class SemEval201810DatasetConstants(SemEval201810Constants):
             self,
             raw_dir=os.path.join(
                 os.getcwd(),
-                'symlinks/data/semeval_2018_10/raw'),
+                'data/datasets/semeval_2018_10/raw'),
             proc_dir=os.path.join(
                 os.getcwd(),
-                'symlinks/data/semeval_2018_10/proc')):
+                'data/datasets/semeval_2018_10/proc')):
         super(SemEval201810DatasetConstants,self).__init__(raw_dir,proc_dir)
         self.subset = ''
         self.embeddings_h5py = None

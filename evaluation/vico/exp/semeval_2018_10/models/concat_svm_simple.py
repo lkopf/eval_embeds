@@ -3,8 +3,8 @@ import copy
 import torch.nn as nn
 from torch.autograd import Variable
 
-import utils.io as io
-import utils.pytorch_layers as pytorch_layers
+import evaluation.vico.utils.io as io
+import evaluation.vico.utils.pytorch_layers as pytorch_layers
 
 
 class ConcatSVMConstants(io.JsonSerializableClass):

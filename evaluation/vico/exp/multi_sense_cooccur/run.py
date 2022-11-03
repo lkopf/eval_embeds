@@ -1,29 +1,38 @@
 import os
 import copy
 
-from exp.experimenter import *
-import utils.io as io
-from utils.argparse_utils import manage_required_args, str_to_bool
-from utils.constants import Constants, ExpConstants
-from . import merge_cooccur
-from .dataset import MultiSenseCooccurDatasetConstants
-from .models.logbilinear import LogBilinearConstants
-from . import train
-from . import extract_embeddings, extract_embeddings_xformed
-from . import concat_with_glove
-from . import concat_random_with_glove
-from . import synset_to_word_cooccur
-from .vis import pca_tsne
-from .vis import supervised_partitioning
-from .vis import unsupervised_clustering
-from data.glove.constants import GloveConstantsFactory
-from data.visualgenome.constants import VisualGenomeConstants
+from evaluation.vico.exp.experimenter import *
+import evaluation.vico.utils.io as io
+from evaluation.vico.utils.argparse_utils import manage_required_args, str_to_bool
+from evaluation.vico.utils.constants import Constants, ExpConstants
+from evaluation.vico.exp.multi_sense_cooccur import merge_cooccur
+from evaluation.vico.exp.multi_sense_cooccur.dataset import MultiSenseCooccurDatasetConstants
+from evaluation.vico.exp.multi_sense_cooccur.models.logbilinear import LogBilinearConstants
+from evaluation.vico.exp.multi_sense_cooccur import train
+from evaluation.vico.exp.multi_sense_cooccur import extract_embeddings, extract_embeddings_xformed
+from evaluation.vico.exp.multi_sense_cooccur import concat_with_glove
+from evaluation.vico.exp.multi_sense_cooccur import concat_random_with_glove
+from evaluation.vico.exp.multi_sense_cooccur import synset_to_word_cooccur
+from evaluation.vico.exp.multi_sense_cooccur.vis import pca_tsne
+from evaluation.vico.exp.multi_sense_cooccur.vis import supervised_partitioning
+from evaluation.vico.exp.multi_sense_cooccur.vis import unsupervised_clustering
+from evaluation.vico.exp.multi_sense_cooccur import reduce_dim_embeds
+from evaluation.vico.data.glove.constants import GloveConstantsFactory
+from evaluation.vico.data.visualgenome.constants import VisualGenomeConstants
 
+import umap
 
+parser.add_argument(
+    '--embed_name',
+    type=str,
+    default='sit',
+    choices=['vis', 'ref', 'den', 'sit', 'denref', 'baroni'],
+    help='Name of the embedding')
 parser.add_argument(
     '--embed_dim',
     type=int,
-    default=100,
+    default=300,
+    choices=[100, 300, 400, 600, 1031],
     help='Dimension of the embedding')
 parser.add_argument(
     '--xform',
@@ -281,32 +290,77 @@ def exp_vis_pca_tsne():
         args,
         parser,
         required_args=[
+            'embed_name',            
             'embed_dim',
-            'xform',
-            'glove_dim'])
-    exp_name = f'{args.xform}_{args.embed_dim}'
+            #'xform',
+            #'glove_dim'
+            ])
+    exp_name = f'{args.embed_name}'#_{args.embed_dim}'
     out_base_dir = os.path.join(
         os.getcwd(),
-        f'symlinks/exp/multi_sense_cooccur')
+        f'results/multi_sense_cooccur')
+    io.mkdir_if_not_exists(out_base_dir)
     exp_const = ExpConstants(exp_name,out_base_dir)
-    exp_const.vis_dir = os.path.join(exp_const.exp_dir,'vis/tsne')
+    io.mkdir_if_not_exists(exp_const.exp_dir)
+    exp_const.vis_dir = os.path.join(exp_const.exp_dir,'tsne')
     exp_const.category_words_only = True
+    exp_const.embed_dim = int(args.embed_dim)
 
     data_const = Constants()
     embed_dir = os.path.join(
-        exp_const.exp_dir,
-        f'concat_with_glove_{args.glove_dim}')
+        os.getcwd(),
+        'data/embeddings')
     data_const.word_vecs_h5py = os.path.join(
         embed_dir,
-        'visual_word_vecs.h5py')
+        f'{args.embed_name}_{args.embed_dim}dim.h5py')
     data_const.word_to_idx_json = os.path.join(
         embed_dir,
-        'visual_word_vecs_idx.json')
+        f'{args.embed_name}_{args.embed_dim}dim_word_to_idx.json')
     genome_const = VisualGenomeConstants()
     data_const.object_freqs_json = genome_const.object_freqs_json
     data_const.attribute_freqs_json = genome_const.attribute_freqs_json
     
     pca_tsne.main(exp_const,data_const)
+
+
+def exp_reduce_dim_embeds():
+    args = parser.parse_args()
+    not_specified_args = manage_required_args(
+        args,
+        parser,
+        required_args=[
+            'embed_name',            
+            'embed_dim',
+            ])
+    exp_name = 'embeddings_dim100' # f'{args.embed_name}'
+    out_base_dir = os.path.join(
+        os.getcwd(),
+        f'results/zero_shot_analysis')
+    io.mkdir_if_not_exists(out_base_dir)
+    exp_const = ExpConstants(exp_name,out_base_dir)
+    io.mkdir_if_not_exists(exp_const.exp_dir)
+    #exp_const.dim_dir = os.path.join(exp_const.exp_dir,'embeddings_dim100')
+    #io.mkdir_if_not_exists(exp_const.vis_dir)
+    exp_const.embed_dim = int(args.embed_dim)
+    exp_const.embed_name = str(args.embed_name)
+
+    data_const = Constants()
+    embed_dir = os.path.join(
+        os.getcwd(),
+        'data/embeddings')
+    data_const.word_vecs_h5py = os.path.join(
+        embed_dir,
+        f'{args.embed_name}_{args.embed_dim}dim.h5py')
+
+    # print('Loading embeddings ...')
+    # embed = io.load_h5py_object(
+    #     data_const.word_vecs_h5py)['embeddings'][()]
+
+    # print(type(embed))
+    # print(embed.shape)
+
+    # X_embed = umap.UMAP(n_components=100).fit_transform(embed)
+    reduce_dim_embeds.main(exp_const,data_const)
 
 
 class SimpleEmbedInfo():
@@ -374,6 +428,10 @@ def exp_unsupervised_clustering():
         os.getcwd(),
         'symlinks/exp/multi_sense_cooccur/linear_100')
 
+    embed_dir = os.path.join(
+        os.getcwd(),
+        'data/embeddings')
+
     """
     Update data_const.embed_info dictionary to control which embeddings are 
     evaluated. To evaluate your own embeddings create a class object with the 
@@ -390,24 +448,24 @@ def exp_unsupervised_clustering():
     However the simplest case could look like `SimpleEmbedInfo` above.
     """
     data_const.embed_info = {
-        'GloVe': EmbedInfo(
-            glove_vico_linear_100,
-            False,
-            'glove', # Only glove component
-            vico_dim=100,
-            glove_dim=300), 
-        'ViCo(linear,100)': EmbedInfo(
-            glove_vico_linear_100,
-            False,
-            'visual', # Only visual component
-            vico_dim=100,
-            glove_dim=300), 
-        'GloVe+ViCo(linear,100)': EmbedInfo(
-            glove_vico_linear_100,
-            False,
-            'both', # Concatenated
-            vico_dim=100,
-            glove_dim=300), 
+        # 'GloVe': EmbedInfo(
+        #     glove_vico_linear_100,
+        #     False,
+        #     'glove', # Only glove component
+        #     vico_dim=100,
+        #     glove_dim=300), 
+        # 'ViCo(linear,100)': EmbedInfo(
+        #     glove_vico_linear_100,
+        #     False,
+        #     'visual', # Only visual component
+        #     vico_dim=100,
+        #     glove_dim=300), 
+        # 'GloVe+ViCo(linear,100)': EmbedInfo(
+        #     glove_vico_linear_100,
+        #     False,
+        #     'both', # Concatenated
+        #     vico_dim=100,
+        #     glove_dim=300), 
         # 'GloVe+ViCo(linear,100)[paper]': SimpleEmbedInfo(
         #     os.path.join(
         #         os.getcwd(),
@@ -415,6 +473,48 @@ def exp_unsupervised_clustering():
         #     os.path.join(
         #         os.getcwd(),
         #         'symlinks/exp/multi_sense_cooccur/paper/linear_100/visual_word_vecs.h5py'))
+        'vis': SimpleEmbedInfo(
+            os.path.join(
+                embed_dir,
+                'vis_1031dim_word_to_idx.json'),
+            os.path.join(
+                embed_dir,
+                'vis_1031dim.h5py')),
+        'ref': SimpleEmbedInfo(
+            os.path.join(
+                embed_dir,
+                'ref_300dim_word_to_idx.json'),
+            os.path.join(
+                embed_dir,
+                'ref_300dim.h5py')),
+        'den': SimpleEmbedInfo(
+            os.path.join(
+                embed_dir,
+                'den_300dim_word_to_idx.json'),
+            os.path.join(
+                embed_dir,
+                'den_300dim.h5py')),
+        'sit': SimpleEmbedInfo(
+            os.path.join(
+                embed_dir,
+                'sit_300dim_word_to_idx.json'),
+            os.path.join(
+                embed_dir,
+                'sit_300dim.h5py')),
+        'denref': SimpleEmbedInfo(
+            os.path.join(
+                embed_dir,
+                'denref_600dim_word_to_idx.json'),
+            os.path.join(
+                embed_dir,
+                'denref_600dim.h5py')),
+        'baroni': SimpleEmbedInfo(
+            os.path.join(
+                embed_dir,
+                'baroni_400dim_word_to_idx.json'),
+            os.path.join(
+                embed_dir,
+                'baroni_400dim.h5py')),
     }
     
     exp_const.fine = True

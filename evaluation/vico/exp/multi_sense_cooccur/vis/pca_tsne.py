@@ -7,8 +7,8 @@ from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
 
 
-import utils.io as io
-from .categories import *
+import evaluation.vico.utils.io as io
+from evaluation.vico.exp.multi_sense_cooccur.vis.categories import *
 
 
 def get_tsne_embeddings(embed,tsne,nruns=3):
@@ -98,6 +98,7 @@ def main(exp_const,data_const):
     attribute_freqs = io.load_json_object(data_const.attribute_freqs_json)
 
     print('Selecting words ...')
+    embed_dim = exp_const.embed_dim 
     visual_words = set()
     for word,freq in object_freqs.items():
         if freq > 100:
@@ -118,8 +119,9 @@ def main(exp_const,data_const):
     words = [word for word in visual_words if word in word_to_idx]
     idxs = [word_to_idx[word] for word in words]
     embed = embed[idxs,:]
-    visual_embed = embed[:,300:]
-    glove_embed = embed[:,:300]
+    # visual_embed = embed[:,300:]
+    # glove_embed = embed[:,:300]
+    visual_embed = embed[:,:embed_dim]
     print('Selected words', visual_embed.shape[0])
 
     print('Assigning marker attributes ...')
@@ -188,8 +190,8 @@ def main(exp_const,data_const):
 
             embed_types_to_embed = {
                 'visual': visual_embed,
-                'glove': glove_embed,
-                'joint': embed,
+                # 'glove': glove_embed,
+                # 'joint': embed,
             }
 
             for embed_type in embed_types_to_embed.keys():

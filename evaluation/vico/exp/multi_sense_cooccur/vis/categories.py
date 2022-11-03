@@ -1,4 +1,4 @@
-from . import fine_categories as C
+from evaluation.vico.exp.multi_sense_cooccur.vis import fine_categories as C
 
 FOOD = set().union(*[
     C.FOOD_DESSERT,

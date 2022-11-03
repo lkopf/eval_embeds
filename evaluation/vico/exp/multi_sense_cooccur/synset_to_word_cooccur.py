@@ -3,7 +3,7 @@ import itertools
 from tqdm import tqdm
 from nltk.corpus import wordnet as wn
 
-import utils.io as io
+import evaluation.vico.utils.io as io
 
 
 def synset_to_words(synset):

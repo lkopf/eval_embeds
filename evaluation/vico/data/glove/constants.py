@@ -1,6 +1,6 @@
 import os
 
-import utils.io as io
+import evaluation.vico.utils.io as io
 
 
 class Glove6B300dConstants(io.JsonSerializableClass):
