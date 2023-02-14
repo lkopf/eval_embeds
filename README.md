@@ -2,8 +2,6 @@
 
 0. First install requirements.txt
 
-need to use python 2 environment for training embeddings (be more precise)
-
 1. Collect data
 
 You need to collect the data, and place it where the scripts expect it. This is described in the [here](https://github.com/clp-research/image_wac/tree/master/Data).
@@ -12,7 +10,7 @@ Note: we only need MSCOCO and SAIAPR
 
 2. Train embeddings
 
-(which environment?)
+(which environment? py2???)
 PREPROCESSING: https://github.com/clp-research/image_wac/tree/master/Preproc
 
 - download image data for training Sina's embeddings:
@@ -30,7 +28,7 @@ python preproc_region_defs.py
   - /Preproc/PreProcOut/mscoco_bbdf.pklz 
   - /Preproc/PreProcOut/saiapr_bbdf.pklz 
 
-IN PYTHON2 environment:
+IN PYTHON2 environment: (py2 ???)
 go to ExtractFeats/sklearn-theano run python setup.py install
 python 
 -> extract features to create
@@ -38,7 +36,7 @@ python
   - saipr.npz # WORKS
   - mscoco.npz # DOESN'T WORK -> NOW WORKS with some modifications
 
-...
+
 
 - preprocess data:
 - for sit, ref, den
@@ -53,64 +51,79 @@ get feature matrix saiapr.npz and mscoco.npz
     - /home/users/lkopf/project/learn_eval_embeddings/026b_image_wac/Preproc/preproc_refexps_copy.py
 - Generate inputs for vis embeddings
     - ???
-- Train sit, ref, den embeddings
-    - /home/users/lkopf/project/learn_eval_embeddings/026b_image_wac/Semantics/embeddings/train_embeddings_all_copy.py
-- Train vis embeddings
-    - /home/users/lkopf/project/learn_eval_embeddings/026b_image_wac/Semantics/embeddings/vis_av_2017_copy.py
 
 
 
-3. Download embeddings
-(- Sina embeddings)
-- baroni web ebeddings
-4. Download datasets for evaluation (vico)
+3. Download datasets for evaluation (vico)
 - Datasets for evaluating embeddings (vico instructions)
 
 - CIFAR-100 which is used for a zero-shot-like analysis
 ```
 bash evaluation/vico/data/cifar100/download.sh
 ```
-- **TODO**: remove 
--> saved here: /home/users/lkopf/project/learn_eval_embeddings/eval_embeds/data/datasets/cifar100/ 
 
 - Data for Discriminative Attributes Task (SemEval 2018 Task 10) which is a word-only downstream task.
 ```
 bash evaluation/vico/data/semeval_2018_10/download.sh
 ```
-- **TODO**: remove 
--> saved here: /home/users/lkopf/project/learn_eval_embeddings/eval_embeds/data/datasets/semeval_2018_10
+
 - VisualGenome (for unsupervised clustering analysis, TSNE plots)
     ```
     bash evaluation/vico/data/visualgenome/download.sh
     ```
 
-5. convert txt embeddings to json and h5py for vico evaluation
-    - **TODO**: change script in
-    /home/users/lkopf/project/learn_eval_embeddings/vico_Laura/save_as_hdf5.py 
 
 ## Learn embeddings (will this ever work???)
 
-* train_embeddings.py
+in 'eval' conda environment
 
- train different types of word embeddings from referring expressions
+run
+```
+bash training/train_all_embeddings.sh
+```
+in: ~/eval_embeds/training
 
- running the script with the default settings will produce the following models:
- - w2v_sit_traindf_headonly_300dim.mod: situational embeddings (restricted to head nouns)
- - w2v_ref_traindf_300dim.mod: standard textual embeddings (predict left and right context)
- - w2v_den_traindf_window1_300dim.mod: denotational embeddings
+Download Baroni embeddings.
+- baroni_400dim.txt
 
-* vis_av_2017.py
+All embeddings can be found in:
+```
+~/eval_embeds/data/embeddings/
+```
+- train_vis-denref_embeddings.py
 
- computes visual embeddings for each word
- (averages over all the visual feature vectors of all positive instances of a word)
- outputs:
- - vis_av_refvocab_traindf.pklz
+    Train different types of word embeddings from referring expressions.
+
+    Running the script with the default settings will produce the following models:
+    - sit_300dim.txt: situational embeddings (restricted to head nouns)
+    - ref_300dim.txt: standard textual embeddings (predict left and right context)
+    - den_300dim.txt: denotational embeddings
+
+
+- train_vis-denref_embeddings.py
+
+    Computes visual embeddings for each word
+    (averages over all the visual feature vectors of all positive instances of a word):
+    - vis_1031dim.txt
+    Concatenates denotational and referential embeddings:
+    - denref_600dim.txt
+
+- preprocess_embeddings.py
+
+ Converts txt embeddings from .txt format to .json and .h5py formats for vico evaluation
 
 ## Evaluate embeddings
 
 ### Zarrieß evaluation
 
-in eval_embeds/ run
+with 'eval' conda env
+
+- eval_embeddings.py
+
+    Use this to run evaluation on some standard similarity benchmarks
+    (correlations with human judgements, hypernym directionality).
+
+in ~/eval_embeds/ run
 ```
 python evaluation/eval_embeddings.py 
 ```
@@ -119,14 +132,9 @@ If you want to save results as text file run:
 python evaluation/eval_embeddings.py  | tee results/Zarriess_evaluation_results.txt
 ```
 
-* eval_embeddings.py
+- eval_embed_entail.py
 
- use this to run evaluation on some standard similarity benchmarks
- (correlations with human judgements, hypernymdirectionality)
-
-* eval_embed_entail.py
-
- use this to evaluate embeddings on the approximate co-reference task
+    Use this to evaluate embeddings on the approximate co-reference task.
 
 ### Vico evaluation
 

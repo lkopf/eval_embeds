@@ -161,7 +161,8 @@ def get_image_filename(icorp, image_id):
 
 # 2016-03-31 moved here from extract_feats.py
 
-def get_thumbnail((old_image_id, img), i_corpus, image_id, bb,
+# def get_thumbnail((old_image_id, img), i_corpus, image_id, bb, # python2
+def get_thumbnail(old_image_id, img, i_corpus, image_id, bb, # python3
                   resize=True,
                   xs=224,ys=224):
     if old_image_id != image_id:
