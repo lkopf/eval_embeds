@@ -87,7 +87,7 @@ mean_vis_feats = get_mean_visual_feats(X_full, X_full_index,
 
 avdict = {word:mean_vis_feats[wx] for wx,word in enumerate(wordlist)}
 # with gzip.open("./training/vis_av_refvocab_traindf.pklz", "w") as f: ###
-with gzip.open("./training/vis_av_refvocab.pklz", "w") as f:
+with gzip.open("vis_av_refvocab.pklz", "w") as f:
     pickle.dump(avdict, f)
 
 print("Save visual embeddings.", strftime("%Y-%m-%d %H:%M:%S"))
@@ -101,7 +101,7 @@ for word in w2v_den.index_to_key:
         w2v_denref[word] = np.hstack([w2v_den[word],w2v_ref[word]])
 
 # save concatenated embeddings as pickle file
-with open("./training/w2v_denref.pkl", "wb") as file:    
+with open("w2v_denref.pkl", "wb") as file:    
     pickle.dump(w2v_denref, file)
 
 print("Save denref embeddings.", strftime("%Y-%m-%d %H:%M:%S"))

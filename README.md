@@ -37,7 +37,6 @@ python
   - mscoco.npz # DOESN'T WORK -> NOW WORKS with some modifications
 
 
-
 - preprocess data:
 - for sit, ref, den
 get refcoco_refdf.pklz etc as output (needed for refexp_heads.py)
@@ -84,6 +83,7 @@ bash training/train_all_embeddings.sh
 in: ~/eval_embeds/training
 
 Download Baroni embeddings.
+
 - baroni_400dim.txt
 
 All embeddings can be found in:
@@ -105,12 +105,13 @@ All embeddings can be found in:
     Computes visual embeddings for each word
     (averages over all the visual feature vectors of all positive instances of a word):
     - vis_1031dim.txt
+
     Concatenates denotational and referential embeddings:
     - denref_600dim.txt
 
 - preprocess_embeddings.py
 
- Converts txt embeddings from .txt format to .json and .h5py formats for vico evaluation
+    Converts txt embeddings from .txt format to .json and .h5py formats for vico evaluation.
 
 ## Evaluate embeddings
 
@@ -131,10 +132,23 @@ If you want to save results as text file run:
 ```
 python evaluation/eval_embeddings.py  | tee results/Zarriess_evaluation_results.txt
 ```
+#### START: NOT WORKING
+Preprocess data for co-reference task:
+```
+python evaluation/make_pairdf.py
+```
+```
+python evaluation/compile_featmats.py
+```
 
 - eval_embed_entail.py
 
     Use this to evaluate embeddings on the approximate co-reference task.
+
+```
+python evaluation/eval_embed_entail.py
+```
+#### END: NOT WORKING
 
 ### Vico evaluation
 

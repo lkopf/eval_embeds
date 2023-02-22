@@ -9,10 +9,10 @@ import json
 
 from gensim.models import KeyedVectors
 
-with gzip.open("./training/vis_av_refvocab.pklz", "r") as f:
+with gzip.open("vis_av_refvocab.pklz", "r") as f:
     vis_av = pickle.load(f, encoding="latin1")
 
-with open("./training/w2v_denref.pkl", "rb") as f:
+with open("w2v_denref.pkl", "rb") as f:
     w2v_denref = pickle.load(f, encoding="latin1")
 
 
@@ -64,8 +64,8 @@ denref.vectors = np.array(list(w2v_denref.values()))
 convert_word2vec_to_txt(binary=False, fname="./data/embeddings/denref_600dim.txt", total_vec=len(w2v_denref), vocab=denref.key_to_index, vectors=denref.vectors)
 
 print("Deleting pickle files...")
-os.remove("./training/vis_av_refvocab.pklz")
-os.remove("./training/w2v_denref.pkl")
+os.remove("vis_av_refvocab.pklz")
+os.remove("w2v_denref.pkl")
 
 
 # get embeddings in h5py and json format
