@@ -332,15 +332,13 @@ def exp_reduce_dim_embeds():
             'embed_name',            
             'embed_dim',
             ])
-    exp_name = 'embeddings_dim100' # f'{args.embed_name}'
+    exp_name = 'embeddings_dim100'
     out_base_dir = os.path.join(
         os.getcwd(),
         f'results/zero_shot_analysis')
     io.mkdir_if_not_exists(out_base_dir)
     exp_const = ExpConstants(exp_name,out_base_dir)
     io.mkdir_if_not_exists(exp_const.exp_dir)
-    #exp_const.dim_dir = os.path.join(exp_const.exp_dir,'embeddings_dim100')
-    #io.mkdir_if_not_exists(exp_const.vis_dir)
     exp_const.embed_dim = int(args.embed_dim)
     exp_const.embed_name = str(args.embed_name)
 
@@ -352,14 +350,6 @@ def exp_reduce_dim_embeds():
         embed_dir,
         f'{args.embed_name}_{args.embed_dim}dim.h5py')
 
-    # print('Loading embeddings ...')
-    # embed = io.load_h5py_object(
-    #     data_const.word_vecs_h5py)['embeddings'][()]
-
-    # print(type(embed))
-    # print(embed.shape)
-
-    # X_embed = umap.UMAP(n_components=100).fit_transform(embed)
     reduce_dim_embeds.main(exp_const,data_const)
 
 
@@ -419,14 +409,16 @@ def exp_unsupervised_clustering():
     exp_name = 'unsupervised_clustering'
     out_base_dir = os.path.join(
         os.getcwd(),
-        'symlinks/exp/multi_sense_cooccur/analysis')
+        f'results/multi_sense_cooccur/')
+    io.mkdir_if_not_exists(out_base_dir)
+
     exp_const = ExpConstants(exp_name,out_base_dir)
 
     data_const = Constants()
 
-    glove_vico_linear_100 = os.path.join(
-        os.getcwd(),
-        'symlinks/exp/multi_sense_cooccur/linear_100')
+    # glove_vico_linear_100 = os.path.join(
+    #     os.getcwd(),
+    #     'symlinks/exp/multi_sense_cooccur/linear_100')
 
     embed_dir = os.path.join(
         os.getcwd(),

@@ -161,12 +161,13 @@ If you want to save results as text file run:
 ```
 python -m evaluation.vico.exp.multi_sense_cooccur.run --exp exp_unsupervised_clustering  | tee results/unsupervised_clustering_evaluation_results.txt
 ```
-Plot tsne
+
+Plot tsne for all embeddings:
 ```
-python -m evaluation.vico.exp.multi_sense_cooccur.run --exp exp_vis_pca_tsne
+bash evaluation/vico/exp/multi_sense_cooccur/exp_vis_pca_tsne_all_embeds.sh
 ```
 
-Add embedding name and according embedding dimension:
+Alternatively, plot tsne for single embedding, change embedding name and according embedding dimension:
 ```
 python -m evaluation.vico.exp.multi_sense_cooccur.run --exp exp_vis_pca_tsne --embed_name='sit' --embed_dim=300
 ```
@@ -186,33 +187,20 @@ Results are saved in:
 
 ~/results/multi_sense_cooccur/{embed_name}
 
-#### Zero-shot Analysis (delete)
-preprocess embeddings: reduce dimensions to 100 dim.
-```
-python -m evaluation.vico.exp.multi_sense_cooccur.run --exp exp_reduce_dim_embeds --embed_name='sit' --embed_dim=300
-```
-
-```
-bash evaluation/vico/exp/cifar100/scripts/run.sh <gpu_id> <embed_name> <embed_dim> <num_held_out_classes>  <run_id>
-```
---held_classes=20 --=0 --run=0
-
-$ bash evaluation/vico/exp/cifar100/scripts/run.sh 0 20 0
-
-<gpu_id> <run_id>
-
-python -m evaluation.vico.exp.cifar100.run --exp exp_train --embed_name='sit' --embed_dim=300
-
 #### Discriminative Attributes
 
 extract words from embeddings:
 ```
 python evaluation/vico/exp/semeval_2018_10/extract_embed_words.py 
 ```
-run discriminative attributes
+Run discriminative attributes for all embeddings.
 ```
 export CUDA_VISIBLE_DEVICES=0
 ```
+```
+bash evaluation/vico/exp/semeval_2018_10/scripts/svm_all_embeds.sh
+```
+Alternatively, run single embedding:
 ```
 bash evaluation/vico/exp/semeval_2018_10/scripts/svm_embeds.sh train_eval sit 300
 ```
