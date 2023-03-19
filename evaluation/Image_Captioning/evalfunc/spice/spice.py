@@ -29,13 +29,10 @@ class Spice:
         except:
           return np.nan
 
-    def compute_score(self, gts, res):
-        assert(sorted(gts.keys()) == sorted(res.keys()))
-        imgIds = sorted(gts.keys())
-        
+    def compute_score(self, gts, res):        
         # Prepare temp input file for the SPICE scorer
         input_data = []
-        for id in imgIds:
+        for id in range(len(res)):
             hypo = res[id]
             ref = gts[id]
 
@@ -88,7 +85,7 @@ class Spice:
           spice_scores.append(self.float_convert(item['scores']['All']['f']))
         average_score = np.mean(np.array(spice_scores))
         scores = []
-        for image_id in imgIds:
+        for image_id in range(len(res)):
           # Convert none to NaN before saving scores over subcategories
           score_set = {}
           for category,score_tuple in imgId_to_scores[image_id].items():

@@ -16,39 +16,39 @@ from evalfunc.spice.spice import Spice
 
 
 parser.add_argument(
-    '--pretrained_emb_name',
+    "--pretrained_emb_name",
     type=str,
-    default='sit',
-    choices=['vis', 'ref', 'den', 'sit', 'denref', 'baroni'],
-    help='Name of the embedding')
+    default="sit",
+    choices=["vis", "ref", "den", "sit", "denref", "baroni"],
+    help="Name of the embedding")
 
 args = parser.parse_args()
 
 # Parameters
 pretrained_emb_name = args.pretrained_emb_name
-data_folder = './evaluation/Image_Captioning/output'  # folder with data files saved by create_input_files.py
-data_name = 'coco_5_cap_per_img_5_min_word_freq'  # base name shared by data files
-word_map_file = os.path.join(data_folder, 'WORDMAP_' + data_name + '.json')  # word map, ensure it's the same the data was encoded with and the model was trained with
-results_folder = './results/Image_Captioning/'
+data_folder = "./evaluation/Image_Captioning/output"  # folder with data files saved by create_input_files.py
+data_name = "coco_5_cap_per_img_5_min_word_freq"  # base name shared by data files
+word_map_file = os.path.join(data_folder, "WORDMAP_" + data_name + ".json")  # word map, ensure it"s the same the data was encoded with and the model was trained with
+results_folder = "./results/Image_Captioning/"
 os.makedirs(results_folder, exist_ok=True)
-# checkpoint_folder = 'results/Image-Captioning/checkpoints/'
-# checkpoint = os.path.join(checkpoint_folder, f'BEST_checkpoint_coco_5_cap_per_img_5_min_word_freq_{pretrained_emb_name}.pth.tar')  # model checkpoint
-checkpoint = f'BEST_checkpoint_coco_5_cap_per_img_5_min_word_freq_{pretrained_emb_name}.pth.tar'  # model checkpoint
+# checkpoint_folder = "results/Image-Captioning/checkpoints/"
+# checkpoint = os.path.join(checkpoint_folder, f"BEST_checkpoint_coco_5_cap_per_img_5_min_word_freq_{pretrained_emb_name}.pth.tar")  # model checkpoint
+checkpoint = f"BEST_checkpoint_coco_5_cap_per_img_5_min_word_freq_{pretrained_emb_name}.pth.tar"  # model checkpoint
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")  # sets device for model and PyTorch tensors
 cudnn.benchmark = True  # set to true only if inputs to model are fixed size; otherwise lot of computational overhead
 
 # Load model
 checkpoint = torch.load(checkpoint)
-decoder = checkpoint['decoder']
+decoder = checkpoint["decoder"]
 decoder = decoder.to(device)
 decoder.eval()
-encoder = checkpoint['encoder']
+encoder = checkpoint["encoder"]
 encoder = encoder.to(device)
 encoder.eval()
 
 # Load word map (word2ix)
-with open(word_map_file, 'r') as j:
+with open(word_map_file, "r") as j:
     word_map = json.load(j)
 rev_word_map = {v: k for k, v in word_map.items()}
 vocab_size = len(word_map)
@@ -67,7 +67,7 @@ def evaluate(beam_size):
     """
     # DataLoader
     loader = torch.utils.data.DataLoader(
-        CaptionDataset(data_folder, data_name, 'TEST', transform=transforms.Compose([normalize])),
+        CaptionDataset(data_folder, data_name, "TEST", transform=transforms.Compose([normalize])),
         batch_size=1, shuffle=True, num_workers=1, pin_memory=True)
 
     # TODO: Batched Beam Search
@@ -97,16 +97,16 @@ def evaluate(beam_size):
         encoder_out = encoder_out.view(1, -1, encoder_dim)  # (1, num_pixels, encoder_dim)
         num_pixels = encoder_out.size(1)
 
-        # We'll treat the problem as having a batch size of k
+        # We"ll treat the problem as having a batch size of k
         encoder_out = encoder_out.expand(k, num_pixels, encoder_dim)  # (k, num_pixels, encoder_dim)
 
-        # Tensor to store top k previous words at each step; now they're just <start>
-        k_prev_words = torch.LongTensor([[word_map['<start>']]] * k).to(device)  # (k, 1)
+        # Tensor to store top k previous words at each step; now they"re just <start>
+        k_prev_words = torch.LongTensor([[word_map["<start>"]]] * k).to(device)  # (k, 1)
 
-        # Tensor to store top k sequences; now they're just <start>
+        # Tensor to store top k sequences; now they"re just <start>
         seqs = k_prev_words  # (k, 1)
 
-        # Tensor to store top k sequences' scores; now they're just 0
+        # Tensor to store top k sequences" scores; now they"re just 0
         top_k_scores = torch.zeros(k, 1).to(device)  # (k, 1)
 
         # Lists to store completed sequences and scores
@@ -143,15 +143,16 @@ def evaluate(beam_size):
                 top_k_scores, top_k_words = scores.view(-1).topk(k, 0, True, True)  # (s)
 
             # Convert unrolled indices to actual indices of scores
-            prev_word_inds = top_k_words / vocab_size  # (s)
+            # prev_word_inds = top_k_words / vocab_size  # (s) # FOR im2txt env
+            prev_word_inds = torch.true_divide(top_k_words, vocab_size )
             next_word_inds = top_k_words % vocab_size  # (s)
 
             # Add new words to sequences
             seqs = torch.cat([seqs[prev_word_inds.long()], next_word_inds.unsqueeze(1)], dim=1)  # (s, step+1) ### .long()
 
-            # Which sequences are incomplete (didn't reach <end>)?
+            # Which sequences are incomplete (didn"t reach <end>)?
             incomplete_inds = [ind for ind, next_word in enumerate(next_word_inds) if
-                               next_word != word_map['<end>']]
+                               next_word != word_map["<end>"]]
             complete_inds = list(set(range(len(next_word_inds))) - set(incomplete_inds))
 
             # Set aside complete sequences
@@ -181,12 +182,12 @@ def evaluate(beam_size):
         # References
         img_caps = allcaps[0].tolist()
         img_captions = list(
-            map(lambda c: [w for w in c if w not in {word_map['<start>'], word_map['<end>'], word_map['<pad>']}],
+            map(lambda c: [w for w in c if w not in {word_map["<start>"], word_map["<end>"], word_map["<pad>"]}],
                 img_caps))  # remove <start> and pads
         references.append(img_captions)
 
         # Hypotheses
-        hypotheses.append([w for w in seq if w not in {word_map['<start>'], word_map['<end>'], word_map['<pad>']}])
+        hypotheses.append([w for w in seq if w not in {word_map["<start>"], word_map["<end>"], word_map["<pad>"]}])
 
         assert len(references) == len(hypotheses)
 
@@ -197,8 +198,8 @@ def evaluate(beam_size):
         (Spice(), "SPICE"),
     ]
 
-    hypo = [[' '.join(hypo)] for hypo in [[str(x) for x in hypo] for hypo in hypotheses]]
-    ref = [[' '.join(reft) for reft in reftmp] for reftmp in [[[str(x) for x in reft] for reft in reftmp]for reftmp in references]]
+    hypo = [[" ".join(hypo)] for hypo in [[str(x) for x in hypo] for hypo in hypotheses]]
+    ref = [[" ".join(reft) for reft in reftmp] for reftmp in [[[str(x) for x in reft] for reft in reftmp]for reftmp in references]]
     
     score = []
     method = []
@@ -211,13 +212,14 @@ def evaluate(beam_size):
     return score_dict
 
 # Save results in json file as dictionary
-if __name__ == '__main__':
+if __name__ == "__main__":
     print(strftime("%Y-%m-%d %H:%M:%S"))
+    print(f"\nEvaluation for {pretrained_emb_name} embedding...\n")
 
     beam_size = 1
     score_dict = evaluate(beam_size)
     for method, score in score_dict.items():
-        print('\n%s:  %.4f' % (method, score))
+        print("\n%s:  %.4f" % (method, score))
         print("\n%s score @ beam size of %d is %.4f." % (method, beam_size, score))
     with open(results_folder + f"score_dict_{pretrained_emb_name}.json", "w") as f:
         json.dump(score_dict , f)    

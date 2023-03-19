@@ -73,6 +73,8 @@ def main():
     with open(word_map_file, 'r') as j:
         word_map = json.load(j)
 
+    print(f"Start training {pretrained_emb_name} embeddings...")
+    
     # load pretrained embeddings
     pretrained_embeddings, emb_dim = load_embeddings(pretrained_emb_path, word_map)   
 

@@ -178,6 +178,7 @@ def load_embeddings(emb_file, word_map):
     with open(emb_file, 'r') as f:
         next(f)
         emb_dim = len(f.readline().split(' ')) - 1
+        emb_dim = 400
 
     vocab = set(word_map.keys())
 

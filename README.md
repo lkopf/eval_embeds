@@ -71,6 +71,7 @@ bash evaluation/vico/data/semeval_2018_10/download.sh
     bash evaluation/vico/data/visualgenome/download.sh
     ```
 
+For Image Captionoing Evaluation download 
 
 ## Learn embeddings (will this ever work???)
 
@@ -209,11 +210,6 @@ bash evaluation/vico/exp/semeval_2018_10/scripts/svm_embeds.sh train_eval sit 30
 adapt create_input_files.py to include paths to COCO data:
 * karpathy_json_path
 * image_folder
-in train.py change:
-* pretrained_emb_name
-+ pretrained_emb_dim
-also in eval.py adapt folders:
-* pretrained_embeddings_name -> TODO: can I make this adaptable outside script?
 
 1) Create input files
 ```
@@ -222,13 +218,20 @@ python evaluation/Image_Captioning/create_input_files.py
 
 2) Train with selected embeddings
 ```
-python evaluation/Image_Captioning/train.py 
+python evaluation/Image_Captioning/train.py --pretrained_emb_name=sit --pretrained_emb_dim=300
 ```
 (takes forever...)
 
-3) Eval best trained model
+3) Evaluate best trained model for each embedding
+
+Run evaluation for all embeddings:
 ```
-python evaluation/Image_Captioning/eval.py 
+bash evaluation/Image_Captioning/eval_all_embeds.sh
+```
+
+Alternatively, run evaluation for single embedding:
+```
+python evaluation/Image_Captioning/eval.py --pretrained_emb_name=sit
 ```
 
 * TODO: cite sources for integration of metrics:
@@ -237,11 +240,11 @@ python evaluation/Image_Captioning/eval.py
 
 4) Generate table of all results
 ```
-python results/Image-Captioning/all_scores_table.py
+python evaluation/Image_Captioning/all_scores_table.py
 ```
 If you want to save results as text file run:
 ```
-python results/Image-Captioning/all_scores_table.py  | tee results/image_captioning_evaluation_results.txt
+python evaluation/Image_Captioning/all_scores_table.py  | tee results/image_captioning_evaluation_results.txt
 ```
 ### Data structure
 
