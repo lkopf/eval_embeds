@@ -74,7 +74,9 @@ def plot_metric_vs_depth(metric_name,metric,depth,filename):
     plotly.offline.plot(
         {'data': traces,'layout': layout},
         filename=filename,
-        auto_open=False)
+        auto_open=False,
+        image='svg')
+
 
 
 def main(exp_const,data_const):
@@ -160,8 +162,10 @@ def main(exp_const,data_const):
             counts = np.zeros([len(categories),1])
             for i,label in enumerate(labels):
                 r = categories_to_idx[label]
-                confmat[r] += prob[i]
-                counts[r,0] += 1
+                # ensure same size
+                if confmat[r].shape == prob[i].shape:
+                    confmat[r] += prob[i]
+                    counts[r,0] += 1
 
             confmat = confmat / counts
             ce = -np.mean(np.sum(confmat*np.log(confmat+1e-6),1))

@@ -521,14 +521,20 @@ def exp_supervised_partitioning():
     exp_name = 'supervised_partitioning'
     out_base_dir = os.path.join(
         os.getcwd(),
-        'symlinks/exp/multi_sense_cooccur/analysis')
+        f'results/multi_sense_cooccur/')
+    io.mkdir_if_not_exists(out_base_dir)
+
     exp_const = ExpConstants(exp_name,out_base_dir)
 
     data_const = Constants()
 
-    glove_vico_linear_100 = os.path.join(
+    # glove_vico_linear_100 = os.path.join(
+    #     os.getcwd(),
+    #     'symlinks/exp/multi_sense_cooccur/linear_100')
+
+    embed_dir = os.path.join(
         os.getcwd(),
-        'symlinks/exp/multi_sense_cooccur/linear_100')
+        'data/embeddings')
 
     """
     Update data_const.embed_info dictionary to control which embeddings are 
@@ -546,24 +552,24 @@ def exp_supervised_partitioning():
     However the simplest case could look like `SimpleEmbedInfo` above.
     """
     data_const.embed_info = {
-        'GloVe': EmbedInfo(
-            glove_vico_linear_100,
-            False,
-            'glove', # Only glove component
-            vico_dim=100,
-            glove_dim=300), 
-        'ViCo(linear,100)': EmbedInfo(
-            glove_vico_linear_100,
-            False,
-            'visual', # Only visual component
-            vico_dim=100,
-            glove_dim=300), 
-        'GloVe+ViCo(linear,100)': EmbedInfo(
-            glove_vico_linear_100,
-            False,
-            'both', # Concatenated
-            vico_dim=100,
-            glove_dim=300),
+        # 'GloVe': EmbedInfo(
+        #     glove_vico_linear_100,
+        #     False,
+        #     'glove', # Only glove component
+        #     vico_dim=100,
+        #     glove_dim=300), 
+        # 'ViCo(linear,100)': EmbedInfo(
+        #     glove_vico_linear_100,
+        #     False,
+        #     'visual', # Only visual component
+        #     vico_dim=100,
+        #     glove_dim=300), 
+        # 'GloVe+ViCo(linear,100)': EmbedInfo(
+        #     glove_vico_linear_100,
+        #     False,
+        #     'both', # Concatenated
+        #     vico_dim=100,
+        #     glove_dim=300),
         # 'GloVe+ViCo(linear,100)[paper]': SimpleEmbedInfo(
         #     os.path.join(
         #         os.getcwd(),
@@ -571,6 +577,48 @@ def exp_supervised_partitioning():
         #     os.path.join(
         #         os.getcwd(),
         #         'symlinks/exp/multi_sense_cooccur/paper/linear_100/visual_word_vecs.h5py'))
+        'vis': SimpleEmbedInfo(
+            os.path.join(
+                embed_dir,
+                'vis_1031dim_word_to_idx.json'),
+            os.path.join(
+                embed_dir,
+                'vis_1031dim.h5py')),
+        'ref': SimpleEmbedInfo(
+            os.path.join(
+                embed_dir,
+                'ref_300dim_word_to_idx.json'),
+            os.path.join(
+                embed_dir,
+                'ref_300dim.h5py')),
+        'den': SimpleEmbedInfo(
+            os.path.join(
+                embed_dir,
+                'den_300dim_word_to_idx.json'),
+            os.path.join(
+                embed_dir,
+                'den_300dim.h5py')),
+        'sit': SimpleEmbedInfo(
+            os.path.join(
+                embed_dir,
+                'sit_300dim_word_to_idx.json'),
+            os.path.join(
+                embed_dir,
+                'sit_300dim.h5py')),
+        'denref': SimpleEmbedInfo(
+            os.path.join(
+                embed_dir,
+                'denref_600dim_word_to_idx.json'),
+            os.path.join(
+                embed_dir,
+                'denref_600dim.h5py')),
+        'baroni': SimpleEmbedInfo(
+            os.path.join(
+                embed_dir,
+                'baroni_400dim_word_to_idx.json'),
+            os.path.join(
+                embed_dir,
+                'baroni_400dim.h5py')),
     }
     
     exp_const.fine = True

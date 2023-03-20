@@ -188,6 +188,16 @@ Results are saved in:
 
 ~/results/multi_sense_cooccur/{embed_name}
 
+#### Supervised Partitioning Analysis
+Run supervised partitioning analysis
+```
+python -m evaluation.vico.exp.multi_sense_cooccur.run --exp exp_supervised_partitioning
+```
+If you want to save results as text file run:
+```
+python -m evaluation.vico.exp.multi_sense_cooccur.run --exp exp_supervised_partitioning  | tee results/Image_Captioning/supervised_partitioning_evaluation_results.txt
+```
+
 #### Discriminative Attributes
 
 extract words from embeddings:
