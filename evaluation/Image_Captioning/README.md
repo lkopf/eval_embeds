@@ -1,3 +1,9 @@
+The original tutorial can be found [here](https://github.com/sgrvinod/a-PyTorch-Tutorial-to-Image-Captioning).
+
+The additional integration of metrics was inspired by [this](https://github.com/ruizhao1997/a-PyTorch-Tutorial-to-Image-Captioning) and [that](https://github.com/salaniz/pycocoevalcap) work.
+
+---
+
 This is a **[PyTorch](https://pytorch.org) Tutorial to Image Captioning**.
 
 This is the first in [a series of tutorials](https://github.com/sgrvinod/Deep-Tutorials-for-PyTorch) I'm writing about _implementing_ cool models on your own with the amazing PyTorch library.

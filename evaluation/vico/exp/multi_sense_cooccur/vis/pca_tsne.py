@@ -55,14 +55,15 @@ def scatter_plot(
             text=[words[k] for k in idxs],
             name=symbol_to_category[symbol].lower())
     layout = go.Layout(
-        title = title,
+        title = None, # title,
         xaxis = dict(title='dim 1'),
         yaxis = dict(title='dim 2'),
         hovermode = 'closest')
     plotly.offline.plot(
         {'data': traces,'layout': layout},
         filename=filename,
-        auto_open=False)
+        auto_open=False,
+        image='svg')
 
 
 def main(exp_const,data_const):

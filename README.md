@@ -160,7 +160,7 @@ python -m evaluation.vico.exp.multi_sense_cooccur.run --exp exp_unsupervised_clu
 ```
 If you want to save results as text file run:
 ```
-python -m evaluation.vico.exp.multi_sense_cooccur.run --exp exp_unsupervised_clustering  | tee results/unsupervised_clustering_evaluation_results.txt
+python -m evaluation.vico.exp.multi_sense_cooccur.run --exp exp_unsupervised_clustering  | tee results/Image_Captioning/unsupervised_clustering_evaluation_results.txt
 ```
 
 Plot tsne for all embeddings:
@@ -233,10 +233,6 @@ Alternatively, run evaluation for single embedding:
 ```
 python evaluation/Image_Captioning/eval.py --pretrained_emb_name=sit
 ```
-
-* TODO: cite sources for integration of metrics:
-- https://github.com/ruizhao1997/a-PyTorch-Tutorial-to-Image-Captioning
-- https://github.com/salaniz/pycocoevalcap
 
 4) Generate table of all results
 ```

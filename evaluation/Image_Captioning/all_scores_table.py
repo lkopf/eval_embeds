@@ -6,7 +6,7 @@ embed_list = ['vis', 'ref', 'den', 'sit', 'denref', 'baroni']
 results = []
 
 for embed in embed_list:
-    file = open(f'./results/score_dict_{embed}.json', 'r')
+    file = open(f'./results/Image_Captioning/score_dict_{embed}.json', 'r')
     embed_scores = json.load(file)
     select_scores = embed_scores.copy()
     [select_scores.pop(key) for key in ['Bleu_2', 'Bleu_3']]
