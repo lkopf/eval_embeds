@@ -105,7 +105,7 @@ def eval_sim_judgements():
     for line in open("./data/embeddings/baroni_400dim.txt"):
         l = line.split()
         w = l[0]
-        if w in w2v_ref.index_to_key and l[1] != "more": 
+        if w in vocab: 
             baroni[w] = np.array(l[1:]).astype(float)   
 
 
