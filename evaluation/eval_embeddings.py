@@ -206,8 +206,8 @@ def eval_hyper():
     for line in open("./data/embeddings/baroni_400dim.txt"):
         l = line.split()
         w = l[0]
-        if w in w2v_ref.index_to_key and l[1] != "more": 
-            baroni[w] = np.array(l[1:]).astype(float)
+        if w in vocab: 
+            baroni[w] = np.array(l[1:]).astype(float)   
 
     print("N hyper pairs", len(hyper))
     model_names = ["w2v_ref","w2v_den","w2v_sit","w2v_den|ref","w2v_den|sit",\

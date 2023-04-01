@@ -133,23 +133,11 @@ If you want to save results as text file run:
 ```
 python evaluation/eval_embeddings.py  | tee results/Zarriess_evaluation_results.txt
 ```
-#### START: NOT WORKING
-Preprocess data for co-reference task:
-```
-python evaluation/make_pairdf.py
-```
-```
-python evaluation/compile_featmats.py
-```
 
-- eval_embed_entail.py
-
-    Use this to evaluate embeddings on the approximate co-reference task.
-
+Notebook for qualitative similarity analysis can be found here:
 ```
-python evaluation/eval_embed_entail.py
+./evaluation/qualitative_similarity.ipynb
 ```
-#### END: NOT WORKING
 
 ### Vico evaluation
 
@@ -160,7 +148,7 @@ python -m evaluation.vico.exp.multi_sense_cooccur.run --exp exp_unsupervised_clu
 ```
 If you want to save results as text file run:
 ```
-python -m evaluation.vico.exp.multi_sense_cooccur.run --exp exp_unsupervised_clustering  | tee results/Image_Captioning/unsupervised_clustering_evaluation_results.txt
+python -m evaluation.vico.exp.multi_sense_cooccur.run --exp exp_unsupervised_clustering  | tee results/unsupervised_clustering_evaluation_results.txt
 ```
 
 Plot tsne for all embeddings:
@@ -195,7 +183,7 @@ python -m evaluation.vico.exp.multi_sense_cooccur.run --exp exp_supervised_parti
 ```
 If you want to save results as text file run:
 ```
-python -m evaluation.vico.exp.multi_sense_cooccur.run --exp exp_supervised_partitioning  | tee results/Image_Captioning/supervised_partitioning_evaluation_results.txt
+python -m evaluation.vico.exp.multi_sense_cooccur.run --exp exp_supervised_partitioning  | tee results/supervised_partitioning_evaluation_results.txt
 ```
 
 #### Discriminative Attributes
@@ -252,6 +240,17 @@ If you want to save results as text file run:
 ```
 python evaluation/Image_Captioning/all_scores_table.py  | tee results/image_captioning_evaluation_results.txt
 ```
+
+### Analogy Task
+Run analogy task
+```
+python evaluation/analogy_task.py
+```
+If you want to save results as text file run:
+```
+python evaluation/analogy_task.py | tee results/analogy_evaluation_results.txt
+```
+
 ### Data structure
 
 ```
