@@ -39,17 +39,16 @@ from sklearn_theano.feature_extraction import GoogLeNetTransformer
 from sklearn_theano.feature_extraction.caffe.googlenet_layer_names import get_googlenet_layer_names
 
 
-
 import sys
-sys.path.append('../Utils')
+sys.path.append('./training/Utils')
 from utils import code_icorpus
 from utils import get_thumbnail
 from utils import join_imagenet_id
 
 
-BASETEMPLATE_TMP = 'ExtrFeatsOut/Temp/%s_%03d.pklz'
-BASETEMPLATE_TMP_GLOB = 'ExtrFeatsOut/Temp/%s_*.pklz' # oh dear
-BASETEMPLATE_FIN = 'ExtrFeatsOut/%s.npz'
+BASETEMPLATE_TMP = './training/ExtractFeats/ExtrFeatsOut/Temp/%s_%03d.pklz'
+BASETEMPLATE_TMP_GLOB = './training/ExtractFeats/ExtrFeatsOut/Temp/%s_*.pklz' # oh dear
+BASETEMPLATE_FIN = './training/ExtractFeats/ExtrFeatsOut/%s.npz'
 
 
 # how many images are loaded up into on X to pass to extractor
@@ -225,7 +224,7 @@ if __name__ == '__main__':
     print '-' * 40
     print strftime("%Y-%m-%d %H:%M:%S")
     print "SAIAPR"
-    with gzip.open('../Preproc/PreProcOut/saiapr_bbdf.pklz', 'r') as f:
+    with gzip.open('./training/Preproc/PreProcOut/saiapr_bbdf.pklz', 'r') as f:
         saia_bbdf = pickle.load(f)
     compute_feats(saia_bbdf)
     concatenate_feat_batches(saia_bbdf)
@@ -234,7 +233,7 @@ if __name__ == '__main__':
     print '-' * 40
     print strftime("%Y-%m-%d %H:%M:%S")
     print "MSCOCO"
-    with gzip.open('../Preproc/PreProcOut/mscoco_bbdf.pklz', 'r') as f:
+    with gzip.open('../training/Preproc/PreProcOut/mscoco_bbdf.pklz', 'r') as f:
         coco_bbdf = pickle.load(f)
     compute_feats(coco_bbdf)
     concatenate_feat_batches(coco_bbdf)

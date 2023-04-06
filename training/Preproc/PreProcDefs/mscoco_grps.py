@@ -4,7 +4,7 @@ now = datetime.datetime.now().strftime('%Y-%m-%d-%H:%M')
 print '... (MSCOCO, Google RProps)'
 print now
 
-with open('../Data/RefExps/MSCOCO/google_refexp_dataset_release/google_refexp_train_201511_coco_aligned.json', 'r') as f:
+with open('./data/RefExps/MSCOCO/google_refexp_dataset_release/google_refexp_train_201511_coco_aligned.json', 'r') as f:
     grex_json = json.load(f)
 
 gimdf = pd.DataFrame(grex_json['images']).T
@@ -31,7 +31,7 @@ bbdf_cocorprop = pd.DataFrame(rows,
                               columns='i_corpus image_id region_id bb cat'.split())
 
 
-with gzip.open('PreProcOut/cocogrprops_bbdf.pklz', 'w') as f:
+with gzip.open('./training/Preproc/PreProcOut/cocogrprops_bbdf.pklz', 'w') as f:
     pickle.dump(bbdf_cocorprop, f)
 
 

@@ -5,7 +5,7 @@ print '... (ImageNet)'
 print now
 
 #XMLBASE = '../Exploration/ImageNet/bbs'
-XMLBASE = '../Data/Images/ImageNet/BBs/Annotation'
+XMLBASE = './data/Images/ImageNet/BBs/Annotation'
 
 
 def xml_to_bb(xml_path):
@@ -73,5 +73,5 @@ bbdf_in = pd.DataFrame(rows,
                        columns=['i_corpus', 'image_id', 
                                 'region_id', 'bb', 'cat'])
 
-with gzip.open('PreProcOut/imagenet_bbdf.pklz', 'w') as f:
+with gzip.open('./training/Preproc/PreProcOut/imagenet_bbdf.pklz', 'w') as f:
     pickle.dump(bbdf_in, f)

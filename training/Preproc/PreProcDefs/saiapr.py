@@ -3,7 +3,7 @@
 # Here I go via the original feature file. I only use this to get
 # at the filenames and the region numbers..
 
-featmat = scipy.io.loadmat('../Data/Images/SAIAPR/saiapr_features.mat')
+featmat = scipy.io.loadmat('./data/Images/SAIAPR/saiapr_features.mat')
 X = featmat['X']
 
 # get all the bounding boxes for SAIAPR regions
@@ -32,5 +32,5 @@ for n, row in tqdm(enumerate(X)):
 
 bbdf_saiapr = pd.DataFrame(outrows, columns='i_corpus image_id region_id bb cat'.split())
 
-with gzip.open('PreProcOut/saiapr_bbdf.pklz', 'w') as f:
+with gzip.open('./training/Preproc/PreProcOut/saiapr_bbdf.pklz', 'w') as f:
     pickle.dump(bbdf_saiapr, f)

@@ -4,7 +4,7 @@ now = datetime.datetime.now().strftime('%Y-%m-%d-%H:%M')
 print '... (SAIAPR, Berkeley EdgeBox)'
 print now
 
-with open('../Preproc/PreProcOut/saiapr_90-10_splits.json', 'r') as f:
+with open('./training/Preproc/PreProcOut/saiapr_90-10_splits.json', 'r') as f:
     saiapr90_10 = json.load(f)
 
 outrows = []
@@ -17,5 +17,5 @@ for this_image_id in tqdm(saiapr90_10['test'][:BERKELEYMAX]):
 
 bbdf_berkeley =  pd.DataFrame(outrows, columns='i_corpus image_id region_id bb cat'.split())
 
-with gzip.open('PreProcOut/berkeley_bbdf.pklz', 'w') as f:
+with gzip.open('./training/Preproc/PreProcOut/berkeley_bbdf.pklz', 'w') as f:
     pickle.dump(bbdf_berkeley, f)

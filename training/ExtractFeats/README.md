@@ -1,5 +1,7 @@
 # Extracting the image features
 
+Original source: https://github.com/clp-research/image_wac/tree/master/ExtractFeats
+
 Now we need feature representations for the regions. We represent the images using the final fully connected layer (1024 dimensions; before softmax) of a large convolutional neural network that was trained in an object recognition task. Note that while the representations it learned were optimized for that set of objects, in themselves they are not specific to them.
 
 We augment these features with a small set (7) of features that provide information about the position of the region within the image (relative x,y coordinates, distance to center, relative area).
