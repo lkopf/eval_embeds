@@ -86,7 +86,6 @@ mean_vis_feats = get_mean_visual_feats(X_full, X_full_index,
                                                wrd2dn, wordlist)
 
 avdict = {word:mean_vis_feats[wx] for wx,word in enumerate(wordlist)}
-# with gzip.open("./training/vis_av_refvocab_traindf.pklz", "w") as f: ###
 with gzip.open("vis_av_refvocab.pklz", "w") as f:
     pickle.dump(avdict, f)
 

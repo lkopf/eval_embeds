@@ -9,6 +9,11 @@ import json
 
 from gensim.models import KeyedVectors
 
+"""
+Convert all embeddings to .txt and .h5py format. Collect word_to_idx in .json format.
+These formats are needed for Vico evaluation methods
+"""
+
 with gzip.open("vis_av_refvocab.pklz", "r") as f:
     vis_av = pickle.load(f, encoding="latin1")
 

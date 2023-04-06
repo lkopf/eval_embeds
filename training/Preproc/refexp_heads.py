@@ -30,7 +30,7 @@ NOHEAD = ['left','right','middle','center','corner','front','rightmost','leftmos
          'facing','blurry','color','colour','dark','pink','foreground','facing','holding']
 
 
-NOUNS = open('noun_list_long.txt').readlines()
+NOUNS = open('./training/Preproc/noun_list_long.txt').readlines()
 
 RELUNI = ['below',
             'above',
@@ -55,16 +55,16 @@ RELTO = ['next', 'close', 'closest']
 
 
 
-with gzip.open('../Preproc/PreProcOut/refcoco_refdf.pklz', 'r') as f:
+with gzip.open('./training/Preproc/PreProcOut/refcoco_refdf.pklz', 'r') as f:
     rrefdf = pickle.load(f)
 
-with gzip.open('../Preproc/PreProcOut/saiapr_refdf.pklz', 'r') as f:
+with gzip.open('./training/Preproc/PreProcOut/saiapr_refdf.pklz', 'r') as f:
     srefdf = pickle.load(f)
 
-with gzip.open('../Preproc/PreProcOut/grex_refdf.pklz', 'r') as f:
+with gzip.open('./training/Preproc/PreProcOut/grex_refdf.pklz', 'r') as f:
     grefdf = pickle.load(f)
 
-with gzip.open('../Preproc/PreProcOut/refcocoplus_refdf.pklz', 'r') as f:
+with gzip.open('./training/Preproc/PreProcOut/refcocoplus_refdf.pklz', 'r') as f:
     r2refdf = pd.read_pickle(f)
     r2refdf = pd.DataFrame(r2refdf)
 
@@ -145,12 +145,12 @@ for x,row in fulldf.iterrows():
 
 fulldf['heads'] = headlist
 
-with open('../Preproc/PreProcOut/fulldf_with_heads.pklz', 'w') as f:
+with open('./training/Preproc/PreProcOut/fulldf_with_heads.pklz', 'w') as f:
     pickle.dump(fulldf,f)
 
 # get w2v vector for head words with freq > 10
 HEADS2VEC = {}
-for line in open('../Data/EN-wform.w.5.cbow.neg10.400.subsmpl.txt'):
+for line in open('./data/embeddings/baroni_400dim.txt'):
     l = line.split()
     w = l[0]
     if HEADS[w] > 10:
@@ -173,6 +173,6 @@ print [h for h in HEADS if HEADS[h] > 10 and h not in HEADS2VEC]
 print "Final number of heads", len(HEADS2VEC)
 print "Final number of regions with a head", len(region2head)
 
-with open('../Preproc/PreProcOut/heads_vecs_regions.pklz', 'w') as f:
+with open('./training/Preproc/PreProcOut/heads_vecs_regions.pklz', 'w') as f:
     pickle.dump((HEADS2VEC,region2head),f)
 
