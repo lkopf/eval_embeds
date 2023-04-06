@@ -26,9 +26,8 @@ import cPickle as pickle
 from glob import glob
 import os
 
-
 import sys
-sys.path.append('../Utils')
+sys.path.append('./training/Utils')
 from utils import icorpus_code, plot_labelled_bb
 from utils import get_saiapr_bb, mscoco_image_filename, saiapr_image_filename
 from utils import get_imagenet_filename
@@ -40,7 +39,7 @@ import logging
 BERKELEYMAX = 500
 
 def get_berkeley_edgeboxes(image_id):
-    BerkeleyBase = '../Data/Images/SAIAPR/Berkeley_rprops/edgeboxes'
+    BerkeleyBase = './data/Images/SAIAPR/Berkeley_rprops/edgeboxes'
     edgebox_path = BerkeleyBase + '/' + str(image_id) + '.txt'
     return np.loadtxt(edgebox_path)
 
@@ -53,7 +52,7 @@ print now
 
 ## SAIAPR
 
-execfile('PreProcDefs/saiapr.py')
+execfile('./training/Preproc/PreProcDefs/saiapr.py')
 
 
 
@@ -64,7 +63,7 @@ execfile('PreProcDefs/saiapr.py')
 
 ## MSCOCO
 
-execfile('PreProcDefs/mscoco.py')
+execfile('./training/Preproc/PreProcDefs/mscoco.py')
 
 
 

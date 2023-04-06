@@ -14,7 +14,7 @@ from nltk.tag.perceptron import PerceptronTagger
 
 
 import sys
-sys.path.append('../Utils')
+sys.path.append('./training/Utils')
 
 from utils import icorpus_code
 
@@ -36,7 +36,7 @@ print 'starting to preprocess...'
 print now
 
 ## ReferIt SAIAPR
- referitpath = '../Data/RefExps/SAIAPR/ReferIt/RealGames.txt'
+ referitpath = './data/RefExps/SAIAPR/ReferIt/RealGames.txt'
 
 refdf = pd.read_csv(referitpath, sep='~', names=['ID', 'refexp', 'regionA', 'regionB'])
 refdf['file'] = refdf['ID'].apply(lambda x: int(x.split('.')[0].split('_')[0]))
@@ -56,8 +56,8 @@ refdf = refdf[['i_corpus', 'image_id', 'region_id', 'r_corpus',
 
 
 # load and write out the splits on SAIAPR as used by Berkeley group (50/50)
-b_splits_train_p = '../Data/Images/SAIAPR/Berkeley_rprops/referit_trainval_imlist.txt'
-b_splits_test_p = '../Data/Images/SAIAPR/Berkeley_rprops/referit_test_imlist.txt'
+b_splits_train_p = './data/Images/SAIAPR/Berkeley_rprops/referit_trainval_imlist.txt'
+b_splits_test_p = './data/Images/SAIAPR/Berkeley_rprops/referit_test_imlist.txt'
 
 saiapr_train_files = np.loadtxt(b_splits_train_p, dtype=int)
 saiapr_test_files = np.loadtxt(b_splits_test_p, dtype=int)
@@ -68,7 +68,7 @@ saiapr_berkeley_splits = {
 }
 
 
-with open('PreProcOut/saiapr_berkeley_10-10_splits.json', 'w') as f:
+with open('./training/Preproc/PreProcOut/saiapr_berkeley_10-10_splits.json', 'w') as f:
     json.dump(saiapr_berkeley_splits, f)
 
 
@@ -79,7 +79,7 @@ saiapr_90_10_splits = {
     'test': saiapr_test_90,
     'train': saiapr_train_90
 }
-with open('PreProcOut/saiapr_90-10_splits.json', 'w') as f:
+with open('./training/Preproc/PreProcOut/saiapr_90-10_splits.json', 'w') as f:
     json.dump(saiapr_90_10_splits, f)
 
 
@@ -87,7 +87,7 @@ with open('PreProcOut/saiapr_90-10_splits.json', 'w') as f:
 
 
 ## ReferIt COCO
-refcoco_path = '../Data/RefExps/MSCOCO/ReferIt_COCO/cleaned(licheng).p'
+refcoco_path = './data/RefExps/MSCOCO/ReferIt_COCO/cleaned(licheng).p'
 with open(refcoco_path, 'r') as f:
     refcoco = pickle.load(f)
 
@@ -122,19 +122,19 @@ for part in refcocodf['split'].value_counts().index:
     # print len(this_filelist)
     refcoco_splits[part] = this_filelist
 
-with open('PreProcOut/refcoco_splits.json', 'w') as f:
+with open('./training/Preproc/PreProcOut/refcoco_splits.json', 'w') as f:
     json.dump(refcoco_splits, f)
 
 
 
 ## Google_Refexp COCO
-gjson_p = '../Data/RefExps/MSCOCO/google_refexp_dataset_release/google_refexp_train_201511_coco_aligned.json'
+gjson_p = './data/RefExps/MSCOCO/google_refexp_dataset_release/google_refexp_train_201511_coco_aligned.json'
 with open(gjson_p, 'r') as f:
     gexp = json.load(f)
 gexan = pd.DataFrame(gexp['annotations']).T
 gexrex = pd.DataFrame(gexp['refexps']).T
 
-gjson_p = '../Data/RefExps/MSCOCO/google_refexp_dataset_release/google_refexp_val_201511_coco_aligned.json'
+gjson_p = './data/RefExps/MSCOCO/google_refexp_dataset_release/google_refexp_val_201511_coco_aligned.json'
 with open(gjson_p, 'r') as f:
     gexpv = json.load(f)
 gexanv = pd.DataFrame(gexpv['annotations']).T
@@ -175,11 +175,11 @@ gexsplits = {
     'val': gexrexv['refexp_id'].tolist()
     }
 
-with open('PreProcOut/google_refexp_rexsplits.json', 'w') as f:
+with open('./training/Preproc/PreProcOut/google_refexp_rexsplits.json', 'w') as f:
     json.dump(gexsplits, f)
 
 
-refcocop_path = '../Data/RefExps/COCO_ReferIt/refcoco_plus/refs(unc).p'
+refcocop_path = './data/RefExps/COCO_ReferIt/refcoco_plus/refs(unc).p'
 with open(refcocop_path, 'r') as f:
     refcocop = pickle.load(f)
 
@@ -227,16 +227,16 @@ print 'refdf: %d\nrefcoco: %d\ngex: %d\nrefcocop: %d' % (len(refdf),
 
 ## Well ok, we should probably write out to disk as well:
 
-with gzip.open('PreProcOut/saiapr_refdf.pklz', 'w') as f:
+with gzip.open('./training/Preproc/PreProcOut/saiapr_refdf.pklz', 'w') as f:
     pickle.dump(refdf, f)
     
-with gzip.open('PreProcOut/refcoco_refdf.pklz', 'w') as f:
+with gzip.open('./training/Preproc/PreProcOut/refcoco_refdf.pklz', 'w') as f:
     pickle.dump(refcoco_fin, f)
     
-with gzip.open('PreProcOut/grex_refdf.pklz', 'w') as f:
+with gzip.open('./training/Preproc/PreProcOut/grex_refdf.pklz', 'w') as f:
     pickle.dump(gexdf, f)
 
-with gzip.open('PreProcOut/refcocoplus_refdf.pklz', 'w') as f:
+with gzip.open('./training/Preproc/PreProcOut/refcocoplus_refdf.pklz', 'w') as f:
     pickle.dump(refcocop_fin, f)
 
 now = datetime.datetime.now().strftime('%Y-%m-%d-%H:%M')
