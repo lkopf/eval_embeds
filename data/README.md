@@ -1,5 +1,7 @@
 # Getting The Data #
 
+Original source: https://github.com/clp-research/image_wac/tree/master/Data
+
 The work reported here is based on a number of public datasets (some of them quite large), which need to be available to reproduce our results. This document explains how to get them. The data must be linked to from the directory that contains this document. The intended directory structure is shown at the end of this document.
 
 ## Image Corpora
@@ -99,8 +101,8 @@ The `json` that we used needs to be computed out of the MSCOCO annotations and a
 # Summary: The Intended Layout
 
 ```bash
-026b_image_wac % tree -L 4 -l --filelimit 10 Data/
-Data/
+eval_embeds % tree -L 4 -l --filelimit 10 Data/
+data/
 |-- GETDATA.md
 |-- Images
 |   |-- MSCOCO
