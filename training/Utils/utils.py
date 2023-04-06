@@ -13,9 +13,9 @@ import os
 from PIL import Image as PImage
 
 
-SAIAPR_BASEDIR = '../Data/Images/SAIAPR/saiapr_tc-12'
-MSCOCO_BASEDIR = '../Data/Images/MSCOCO/train2014'
-IMAGENET_TEMPLATE = '../Data/Images/ImageNet/SelectedImages/%s/%s.JPEG'
+SAIAPR_BASEDIR = '../data/Images/SAIAPR/saiapr_tc-12'
+MSCOCO_BASEDIR = '../data/Images/MSCOCO/train2014'
+IMAGENET_TEMPLATE = '../data/Images/ImageNet/SelectedImages/%s/%s.JPEG'
 
 
 icorpus_code = {

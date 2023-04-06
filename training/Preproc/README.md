@@ -1,6 +1,6 @@
 # Preprocessing the data
 
-This directory contains the scripts for preprocessing the data from `../Data`.
+This directory contains the scripts for preprocessing the data from `../data`.
 The referring expressions and image region proposals all came in somewhat different formats. These are converted into a uniform data structure which will form the basis for the further processing.
 
 
