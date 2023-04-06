@@ -106,12 +106,12 @@ Corresponding embedding names and dimensions. Useful for evaluating individual e
 
 | embed_name | embed_dim |
 |------------|-----------|
-| 'vis'      | 1031      |
-| 'ref'      | 300       |
-| 'den'      | 300       |
-| 'sit'      | 300       |
-| 'denref'   | 600       |
 | 'baroni'   | 400       |
+| 'den'      | 300       |
+| 'denref'   | 600       |
+| 'ref'      | 300       |
+| 'sit'      | 300       |
+| 'vis'      | 1031      |
 
 ## Similarity and Relatedness
 
